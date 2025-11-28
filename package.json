@@ -1,6 +1,7 @@
 {
   "name": "campus-lostfound-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,11 +21,13 @@
   },
   "homepage": "https://github.com/ying2212/campus-LostFound-backend#readme",
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "@supabase/supabase-js": "^2.86.0",
     "axios": "^1.13.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "prisma": "^6.19.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
