@@ -1,9 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(process.env.SUPABASE_URL);
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
 
 export async function authMiddleWare(req, res, next) {
-  const token = req.header.authorization?.split(" ")[1];
+  const token = req.headers.authorization?.split(" ")[1];
+  console.log("Received token:", token);  
 
   if (!token) return res.status(401).json({ error: "No token provided" });
 

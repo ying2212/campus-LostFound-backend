@@ -1,6 +1,6 @@
 import express from "express";
-import { createItemPost, getItemPost} from "../handlers/ItemRoutesHandler"
-import { authMiddleWare } from "../middleware/auth";
+import { createItemPost, getItemPost} from "../handlers/ItemRoutesHandler.js";
+import { authMiddleWare } from "../middleware/auth.js";
 
 const router= express.Router();
 

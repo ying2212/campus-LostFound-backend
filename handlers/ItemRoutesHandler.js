@@ -2,11 +2,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function createItemPost(req,res){
-    const {title, ImageURL, createdAt,TimeFound,FoundAt,Description}= req.body
+    const {title, ImageUrl,TimeFound,FoundAt,Description}= req.body
 
     try{
         const item = await prisma.Post.create({
-            data: {title, ImageURL, createdAt: new Date(FoundAt),TimeFound,FoundAt,Description,author:userID},
+            data: {title, ImageUrl, createdAt: new Date(FoundAt),TimeFound,FoundAt,Description,authorId: req.user.id},
         })
 
         res.json(item);
@@ -22,6 +22,15 @@ export async function getItemPost(req,res){
             orderBy:{
                 createdAt: "desc",
             },
+            include:{
+                author:{
+                    select:{
+                        id:true,
+                        name:true,
+                        email:true,
+                    }
+                }
+            }
         });
         res.json(posts);
     }

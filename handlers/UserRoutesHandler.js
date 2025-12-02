@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-const prisma = PrismaClient();
+const prisma = new PrismaClient();
 
 export async function createNewUser(req,res){
     try{
@@ -15,3 +15,12 @@ catch(error){
 }
 
 };
+export async function getExistingUsers(req, res) {
+    try {
+        const users = await prisma.user.findMany();
+        res.json(users);
+    }catch(error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+  

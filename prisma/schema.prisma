@@ -5,21 +5,21 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String      @id
   createdAt DateTime @default(now())
   email     String   @unique
   password  String
-  name      String
+  name      String?
   role      Role     @default(USER)
   Posts     Post[]
 }
@@ -36,7 +36,7 @@ model Post {
   Status    Boolean  @default(false)
   title     String   @db.VarChar(100)
   author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  authorId  String?
 }
 
 enum Categories{
