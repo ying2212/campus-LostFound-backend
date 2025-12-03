@@ -32,7 +32,6 @@ model Post {
   TimeFound DateTime 
   Description String @db.VarChar(150)
   Category Categories
-  Type      Type   
   FoundAt   String
   ImageUrl  String
   Status    Boolean  @default(false)
@@ -47,11 +46,6 @@ enum Categories{
   BAGS
   BOOKS 
   OTHER
-}
-
-enum Type{
-  LOST
-  FOUND
 }
 
 enum Role {
