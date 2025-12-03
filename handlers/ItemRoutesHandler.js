@@ -2,14 +2,14 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function createItemPost(req,res){
-    const {title, ImageUrl,TimeFound,FoundAt,Description,Category, Type}= req.body
+    const {title, ImageUrl,TimeFound,FoundAt,Description,Category}= req.body
     // only authenticated users can create posts
-    if(!red.user?.id){
+    if(!req.user?.id){
         return res.status(401).json({error: "Unauthorized"})
     }
 
     try{
-        const item = await prisma.Post.create({
+        const item = await prisma.post.create({
             data: {
                 title,
                 ImageUrl: ImageUrl || null, 
@@ -17,7 +17,6 @@ export async function createItemPost(req,res){
                 FoundAt,
                 Description,
                 Category,
-                Type,
                 authorId: req.user.id,
             },
         })
@@ -32,7 +31,7 @@ export async function createItemPost(req,res){
 
 export async function getItems(req,res){
     try{
-        const posts = await prisma.Post.findMany({
+        const posts = await prisma.post.findMany({
             orderBy:{
                 createdAt: "desc",
             },
@@ -49,15 +48,15 @@ export async function getItems(req,res){
         const items = posts.map(post => ({
             id: post.id,
             title: post.title,
-            ImageUrl: post.ImageUrl,
-            TimeFound: post.TimeFound,
-            FoundAt: post.FoundAt,
-            Description: post.Description,
-            Category: post.Category,
-            Type: post.Type,
+            imageUrl: post.ImageUrl,
+            timeFound: post.TimeFound,
+            foundAt: post.FoundAt,
+            description: post.Description,
+            category: post.Category,
             createdAt: post.createdAt,
             author: post.author,
         }));
+
         res.json(items);
     }
     catch(error){
