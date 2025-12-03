@@ -2,16 +2,26 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function createItemPost(req,res){
-    const {title, ImageUrl,TimeFound,FoundAt,Description}= req.body
+    const {title, ImageUrl,TimeFound,FoundAt,Description,Category, Type}= req.body
 
     try{
         const item = await prisma.Post.create({
-            data: {title, ImageUrl, createdAt: new Date(FoundAt),TimeFound,FoundAt,Description,authorId: req.user.id},
+            data: {
+                title,
+                ImageUrl: ImageUrl || null, 
+                TimeFound: new Date(TimeFound),
+                FoundAt,
+                Description,
+                Category,
+                Type,
+                authorId: req.user.id,
+            },
         })
 
         res.json(item);
     }
     catch(error){
+        console.error('Error creating post:', error);
         res.status(500).json({error: error.message})
     }
 };
