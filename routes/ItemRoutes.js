@@ -1,10 +1,10 @@
 import express from "express";
-import { createItemPost, getItemPost} from "../handlers/ItemRoutesHandler"
-import { authMiddleWare } from "../middleware/auth";
+import { createItemPost, getItems} from "../handlers/ItemRoutesHandler.js";
+import { authMiddleWare } from "../middleware/auth.js";
 
 const router= express.Router();
 
 router.post("/post-lost-item", authMiddleWare,createItemPost);
-router.get("/retrieve-item-posts", getItemPost);
+router.get("/retrieve-item-posts", getItems);
 
 export default router
