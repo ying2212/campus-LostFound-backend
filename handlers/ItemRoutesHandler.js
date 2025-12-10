@@ -5,9 +5,8 @@ const prisma = new PrismaClient();
 export async function createItemPost(req,res){
     const {title, ImageUrl,TimeFound,FoundAt,Description,Category}= req.body
     
-
     try{
-        const item = await prisma.Post.create({
+        const item = await prisma.post.create({
             data: {
                 title,
                 ImageUrl, 
@@ -29,7 +28,7 @@ export async function createItemPost(req,res){
 
 export async function getItems(req,res){
     try{
-        const posts = await prisma.Post.findMany({
+        const posts = await prisma.post.findMany({
             orderBy:{
                 createdAt: "desc",
             },
@@ -42,12 +41,9 @@ export async function getItems(req,res){
                 }
             }
         });
+        
         res.json(posts)
     }
-    catch(error){
-        res.status(500).json({error: error.message})
-    }
-}
 
 export async function updatePost(req,res){
     const { id } = req.params;
