@@ -44,6 +44,10 @@ export async function getItems(req,res){
         
         res.json(posts)
     }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+}
 
 export async function updatePost(req,res){
     const { id } = req.params;
@@ -72,9 +76,9 @@ export async function updatePost(req,res){
     });
 
     res.json(updatedPost);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 
 }
 
