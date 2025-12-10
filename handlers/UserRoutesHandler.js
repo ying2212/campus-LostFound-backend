@@ -29,15 +29,6 @@ export async function registerUser(req, res) {
             return res.status(400).json({ error: error.message });
         }
 
-        // Create user in the database
-        await prisma.user.create({
-            data: {
-                id: data.user.id,
-                email: email,
-                password: password,
-            },
-        });
-
         res.json({
             message: 'Registration successful! Please check your email to verify your account.',
             user: data.user,
@@ -66,11 +57,6 @@ export async function loginUser(req, res) {
             return res.status(400).json({ error: error.message });
         }
 
-        // Check if email is verified
-        if (!data.user.email_confirmed_at) {
-            return res.status(400).json({ error: 'Please verify your email before logging in. Check your inbox!' });
-        }
-
         res.json({
             token: data.session.access_token,
             user: {
@@ -87,17 +73,12 @@ export async function loginUser(req, res) {
 // Get current user
 export async function getCurrentUser(req, res) {
     try {
-        const user = await prisma.user.findUnique({
-            where: { id: req.user.id },
-            select: {
-                id: true,
-                email: true,
-            }
-        });
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+        if (!req.user) {
+            return res.status(401).json({ error: "Not authenticated" });
         }
+        const user = {
+         id: req.user.id,
+         email: req.user.email}
 
         res.json(user);
     } catch (error) {
