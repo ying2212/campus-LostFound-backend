@@ -3,11 +3,11 @@ const prisma = new PrismaClient();
 
 
 export async function createItemPost(req,res){
-    const {title,TimeFound,FoundAt,Description,Category}= req.body
+    const { title, TimeFound,FoundAt,Description,Category,HowToClaim } = req.body;
     if (!req.file) {
         return res.status(400).json({ error: "Image is required" });
     }
-    if (!title || !TimeFound || !FoundAt || !Description || !Category) {
+    if (!title || !TimeFound || !FoundAt || !Description || !Category || !HowToClaim) {
         return res.status(400).json({ error: "All fields are required" });
     }
     try{
@@ -19,6 +19,7 @@ export async function createItemPost(req,res){
                 FoundAt,
                 Description,
                 Category,
+                HowToClaim,
                 authorId: req.user.id,
             },
         })
@@ -65,6 +66,7 @@ export async function updatePost(req,res){
     if(Category !== undefined) data.Category = Category;
     if(Foundat !== undefined) data.Foundat = Foundat;
     if(Timefound !== undefined) data.Timefound = Timefound;
+    if(HowToClaim !== undefined) data.HowToClaim = HowToClaim;
 
     try {
 

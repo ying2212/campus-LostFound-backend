@@ -36,6 +36,7 @@ model Post {
   ImageUrl  String
   Status    Boolean  @default(false)
   title     String   @db.VarChar(100)
+  HowToClaim  String    @db.VarChar(300)
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
 }
