@@ -9,11 +9,16 @@ const supabase = createClient(
 
 // Register new user
 export async function registerUser(req, res) {
+    console.log('req.body:', req.body);
     const { email, password } = req.body;
+    console.log('email:', email, 'password:', password);
 
     // Email validation
     if (!(email.endsWith('@hunter.cuny.edu') || email.endsWith('@myhunter.cuny.edu'))) {
         return res.status(400).json({ error: 'Email must be a Hunter College email address.' });
+    }
+    if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
     }
 
     try {

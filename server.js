@@ -7,10 +7,17 @@ import { createClient } from '@supabase/supabase-js'
 import { authMiddleWare } from './middleware/auth.js'
 import itemRoutes from './routes/ItemRoutes.js'
 import userRoutes from './routes/UserRoutes.js'
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config()
 const app = express()
 const prisma = new PrismaClient()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve the uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Supabase setup
 const supabase = createClient(

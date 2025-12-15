@@ -3,13 +3,18 @@ const prisma = new PrismaClient();
 
 
 export async function createItemPost(req,res){
-    const {title, ImageUrl,TimeFound,FoundAt,Description,Category}= req.body
-    
+    const {title,TimeFound,FoundAt,Description,Category}= req.body
+    if (!req.file) {
+        return res.status(400).json({ error: "Image is required" });
+    }
+    if (!title || !TimeFound || !FoundAt || !Description || !Category) {
+        return res.status(400).json({ error: "All fields are required" });
+    }
     try{
         const item = await prisma.post.create({
             data: {
                 title,
-                ImageUrl, 
+                ImageUrl: `/uploads/${req.file.filename}`,
                 TimeFound: new Date(TimeFound),
                 FoundAt,
                 Description,
@@ -45,6 +50,7 @@ export async function getItems(req,res){
         res.json(posts)
     }
     catch(error){
+        console.error('Error fetching posts:', error);
         res.status(500).json({error: error.message})
     }
 }
@@ -52,7 +58,13 @@ export async function getItems(req,res){
 export async function updatePost(req,res){
     const { id } = req.params;
     const { title, Description, ImageUrl, Category, Foundat, Timefound } = req.body
-    const data = { title, Description, ImageUrl, Category, Foundat, Timefound };
+    const data = {};
+    if(title !== undefined) data.title = title;
+    if(Description !== undefined) data.Description = Description;
+    if(ImageUrl !== undefined) data.ImageUrl = ImageUrl;
+    if(Category !== undefined) data.Category = Category;
+    if(Foundat !== undefined) data.Foundat = Foundat;
+    if(Timefound !== undefined) data.Timefound = Timefound;
 
     try {
 
@@ -111,6 +123,7 @@ export async function deletePost(req,res){
 
     catch(error)
     {
+        console.log('Error deleting post:', error);
         res.status(500).json({ error: error.message })
     }
 }
