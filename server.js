@@ -13,11 +13,6 @@ import { fileURLToPath } from 'url';
 dotenv.config()
 const app = express()
 const prisma = new PrismaClient()
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Serve the uploads folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Supabase setup
 const supabase = createClient(
