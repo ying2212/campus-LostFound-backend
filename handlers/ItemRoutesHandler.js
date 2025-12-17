@@ -14,7 +14,7 @@ export async function createItemPost(req,res){
         const item = await prisma.post.create({
             data: {
                 title,
-                ImageUrl: `/uploads/${req.file.filename}`,
+                ImageUrl: req.file.location,
                 TimeFound: new Date(TimeFound),
                 FoundAt,
                 Description,
@@ -58,7 +58,7 @@ export async function getItems(req,res){
 
 export async function updatePost(req,res){
     const { id } = req.params;
-    const { title, Description, ImageUrl, Category, Foundat, Timefound } = req.body
+    const { title, Description, ImageUrl, Category, Foundat, Timefound,HowToClaim } = req.body
     const data = {};
     if(title !== undefined) data.title = title;
     if(Description !== undefined) data.Description = Description;
@@ -81,16 +81,17 @@ export async function updatePost(req,res){
     }
 
     if (existingPost.authorId !== req.user.id) {
-      return res.status(403).json({ error: "You cannot edit this post" });
+      return res.status(403).json({ error: "You cannot claim this item post" });
     }
 
     const updatedPost = await prisma.Post.update({
       where: { id: postId },
-      data,
+      data: { Status: true },
     });
 
     res.json(updatedPost);
     } catch (error) {
+        console.error('Error claiming post:', err);
         res.status(500).json({ error: error.message });
     }
 
