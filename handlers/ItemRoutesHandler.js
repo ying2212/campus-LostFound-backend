@@ -7,6 +7,7 @@ export async function createItemPost(req, res) {
     if (!req.file) {
         return res.status(400).json({ error: "Image is required" });
     }
+    // Validate required fields
     if (!title || !TimeFound || !FoundAt || !Description || !Category || !HowToClaim) {
         return res.status(400).json({ error: "All fields are required" });
     }
@@ -34,6 +35,7 @@ export async function createItemPost(req, res) {
 
 export async function getItems(req, res) {
     try {
+        // Fetch posts with author details
         const posts = await prisma.post.findMany({
             orderBy: {
                 createdAt: "desc",
@@ -72,7 +74,7 @@ export async function updatePost(req, res) {
     try {
 
         const postId = parseInt(id);
-
+        // Check if post exists
         const existingPost = await prisma.Post.findUnique({
             where: { id: postId },
         });
@@ -106,7 +108,7 @@ export async function updatePost(req, res) {
     }
 
 }
-
+// Delete post handler
 export async function deletePost(req, res) {
 
     const { id } = req.params;
@@ -114,7 +116,7 @@ export async function deletePost(req, res) {
     try {
         const postId = parseInt(id);
 
-
+        // Check if post exists
         const existingPost = await prisma.Post.findUnique({
             where: { id: postId },
         });
@@ -126,7 +128,7 @@ export async function deletePost(req, res) {
         if (existingPost.authorId !== req.user.id) {
             return res.status(403).json({ error: "You cannot delete this post" });
         }
-
+        // Delete the post
         await prisma.Post.delete({
             where: { id: postId }
         })
