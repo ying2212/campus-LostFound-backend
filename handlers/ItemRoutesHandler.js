@@ -77,16 +77,6 @@ export async function updatePost(req, res) {
             where: { id: postId },
         });
 
-<<<<<<< HEAD
-    if (existingPost.authorId !== req.user.id) {
-      return res.status(403).json({ error: "You cannot claim this item post" });
-    }
-
-    const updatedPost = await prisma.Post.update({
-      where: { id: postId },
-      data: { Status: true },
-    });
-=======
         if (!existingPost) {
             return res.status(404).json({ error: "Post not found" });
         }
@@ -103,7 +93,6 @@ export async function updatePost(req, res) {
                 return res.status(403).json({ error: "You cannot edit this post" });
             }
         }
->>>>>>> 5dc817a (updated readme)
 
         const updatedPost = await prisma.Post.update({
             where: { id: postId },
